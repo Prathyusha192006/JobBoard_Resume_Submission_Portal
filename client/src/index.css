@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --app-radius: 14px;
+}
+
+@theme {
+  --color-primary: #4f46e5; /* indigo-600 */
+  --color-primary-500: #6366f1;
+  --color-primary-400: #818cf8;
+  --color-muted: #6b7280; /* gray-500 */
+  --shadow-soft: 0 10px 25px -10px rgba(79,70,229,.25);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light;
+  color: #0f172a;
+  background-color: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App containers */
+.container-app { @apply mx-auto max-w-7xl px-6 md:px-8; }
+.section { @apply py-10 md:py-14; }
+
+/* Cards */
+.card { @apply bg-white border border-gray-100 rounded-xl shadow-sm; }
+.card-hover { @apply transition hover:shadow-md; box-shadow: var(--shadow-soft); }
+
+/* Buttons */
+.btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition; }
+.btn-primary { @apply text-white bg-[--color-primary] hover:bg-[--color-primary-500] shadow-md; }
+.btn-outline { @apply border border-gray-300 hover:bg-gray-50; }
+.btn-soft { @apply bg-indigo-50 text-[--color-primary] hover:bg-indigo-100; }
+
+/* Inputs */
+.input { @apply w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[--color-primary] focus:border-[--color-primary]; }
+.label { @apply block text-sm font-medium mb-1; }
+
+/* Badges */
+.badge { @apply inline-flex items-center rounded-lg px-3 py-1 text-xs font-medium bg-white border border-gray-200 shadow-sm; }
+
+a:not(.btn) {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover:not(.btn) {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
+  color: #0f172a;
+}
+
+#root {
+  min-height: 100%;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button:not(.btn) {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover:not(.btn) {
+  border-color: #646cff;
+}
+button:focus:not(.btn),
+button:focus-visible:not(.btn) {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button:not(.btn) {
+    background-color: #f9f9f9;
+  }
+}
