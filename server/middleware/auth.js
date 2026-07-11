@@ -9,7 +9,7 @@ function auth(req, res, next){
       req.userId = '000000000000000000000000'
       return next()
     }
-    const payload = jwt.verify(token, process.env.JWT_SECRET)
+    const payload = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret')
     req.userId = payload.id || payload.sub
     next()
   } catch (e) {
