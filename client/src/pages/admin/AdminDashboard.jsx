@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 
 export default function AdminDashboard(){
   const [users, setUsers] = useState([])
@@ -16,7 +16,7 @@ export default function AdminDashboard(){
   const fetchUsers = async () => {
     try {
       setLoading(true)
-      const { data } = await axios.get('/api/admin/users', { headers: getAuthHeader() })
+      const { data } = await api.get('/admin/users')
       setUsers(data.users || [])
     } catch (e) {
       console.error(e)

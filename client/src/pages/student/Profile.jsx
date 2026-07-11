@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 
 export default function Profile(){
   const [toast, setToast] = useState('')
@@ -33,7 +33,7 @@ export default function Profile(){
   const fetchProfile = async () => {
     try {
       setLoading(true)
-      const { data } = await axios.get('/api/auth/profile', { headers: getAuthHeader() })
+      const { data } = await api.get('/auth/profile')
       const p = data.profile || {}
       setProfile({
         name: data.user?.name || '',
@@ -85,7 +85,7 @@ export default function Profile(){
         achievements: updatedFields.achievements !== undefined ? updatedFields.achievements : profile.achievements
       }
       
-      const { data } = await axios.put('/api/auth/profile', payload, { headers: getAuthHeader() })
+      const { data } = await api.put('/auth/profile', payload)
       if (data.user?.name) {
         localStorage.setItem('user_name', data.user.name)
       }
@@ -132,7 +132,7 @@ export default function Profile(){
     
     try {
       setToast('Uploading resume...')
-      const { data } = await axios.post('/api/upload', formData, {
+      const { data } = await api.post('/upload', formData, {
         headers: {
           ...getAuthHeader(),
           'Content-Type': 'multipart/form-data'

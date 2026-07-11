@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 
 export default function StudentDashboard(){
   const [tab, setTab] = useState('resume')
@@ -41,7 +41,7 @@ export default function StudentDashboard(){
       }
 
       // Fetch Profile
-      const profileRes = await axios.get('/api/auth/profile', { headers: getAuthHeader() })
+      const profileRes = await api.get('/auth/profile')
       const p = profileRes.data.profile || {}
       setProfile({
         name: profileRes.data.user?.name || '',
@@ -57,15 +57,15 @@ export default function StudentDashboard(){
       })
 
       // Fetch Applied Jobs
-      const appliedRes = await axios.get('/api/applied', { headers: getAuthHeader() })
+      const appliedRes = await api.get('/applied')
       setApplied(appliedRes.data.jobs || [])
 
       // Fetch Saved Jobs
-      const savedRes = await axios.get('/api/saved', { headers: getAuthHeader() })
+      const savedRes = await api.get('/saved')
       setSaved(savedRes.data.jobs || [])
 
       // Fetch public jobs list for suggestions
-      const jobsRes = await axios.get('/api/jobs')
+      const jobsRes = await api.get('/jobs')
       setAllJobs(jobsRes.data.jobs || [])
 
     } catch (e) {
@@ -91,7 +91,7 @@ export default function StudentDashboard(){
   const applyToJob = async (jobId) => {
     try {
       setToast('Applying...')
-      await axios.post('/api/applied', { jobId }, { headers: getAuthHeader() })
+      await api.post('/applied', { jobId })
       setToast('Applied successfully!')
       fetchData() // refresh lists
     } catch (e) {
@@ -101,7 +101,7 @@ export default function StudentDashboard(){
 
   const unsaveJob = async (jobId) => {
     try {
-      await axios.delete(`/api/saved/${jobId}`, { headers: getAuthHeader() })
+      await api.delete(`/saved/${jobId}`)
       setToast('Job unsaved')
       fetchData()
     } catch (e) {
@@ -135,7 +135,7 @@ export default function StudentDashboard(){
     
     try {
       setToast('Uploading resume...')
-      const { data } = await axios.post('/api/upload', formData, {
+      const { data } = await api.post('/upload', formData, {
         headers: {
           ...getAuthHeader(),
           'Content-Type': 'multipart/form-data'
@@ -149,7 +149,7 @@ export default function StudentDashboard(){
       }))
 
       // save URL to profile
-      await axios.put('/api/auth/profile', {
+      await api.put('/auth/profile', {
         resumeUrl: data.resumeUrl,
         resumeName: data.fileName
       }, { headers: getAuthHeader() })
@@ -167,7 +167,7 @@ export default function StudentDashboard(){
     if (!ok) return
     
     try {
-      await axios.put('/api/auth/profile', {
+      await api.put('/auth/profile', {
         resumeUrl: '',
         resumeName: ''
       }, { headers: getAuthHeader() })

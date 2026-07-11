@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 
 export default function Students(){
   const [students, setStudents] = useState([])
@@ -17,7 +17,7 @@ export default function Students(){
     const fetchStudents = async () => {
       try {
         setLoading(true)
-        const { data } = await axios.get('/api/admin/users', { headers: getAuthHeader() })
+        const { data } = await api.get('/admin/users')
         const allStudents = (data.users || []).filter(u => u.role === 'jobseeker')
         setStudents(allStudents)
       } catch (e) {

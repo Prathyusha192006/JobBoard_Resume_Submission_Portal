@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 
 export default function Jobs(){
   const [jobs, setJobs] = useState([])
@@ -11,7 +11,7 @@ export default function Jobs(){
     const fetchJobs = async () => {
       try {
         setLoading(true)
-        const { data } = await axios.get('/api/jobs')
+        const { data } = await api.get('/jobs')
         setJobs(data.jobs || [])
       } catch (e) {
         setError('Failed to load active jobs')

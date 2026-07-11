@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 
 export default function JobsFeed(){
   const [jobs, setJobs] = useState([])
@@ -25,7 +25,7 @@ export default function JobsFeed(){
     const token = localStorage.getItem('auth_token')
     if (!token) return
     try {
-      const { data } = await axios.get('/api/applied', { headers: { 'Authorization': `Bearer ${token}` } })
+      const { data } = await api.get('/applied')
       const ids = new Set((data.jobs || []).map(j => j._id))
       setAppliedJobIds(ids)
     } catch (e) {
@@ -42,7 +42,7 @@ export default function JobsFeed(){
       if (params.location) query.append('location', params.location)
       if (params.jobType) query.append('tags', params.jobType)
       
-      const { data } = await axios.get(`/api/jobs?${query.toString()}`)
+      const { data } = await api.get(`/jobs?${query.toString()}`)
       setJobs(data.jobs || [])
     } catch (e) {
       setError('Failed to load jobs')
@@ -83,7 +83,7 @@ export default function JobsFeed(){
     
     try {
       setToast('Submitting application...')
-      await axios.post('/api/applied', { jobId }, { headers: { 'Authorization': `Bearer ${token}` } })
+      await api.post('/applied', { jobId })
       setAppliedJobIds(prev => {
         const next = new Set(prev)
         next.add(jobId)

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 
 export default function Reports(){
   const [messages, setMessages] = useState([])
@@ -17,7 +17,7 @@ export default function Reports(){
   const fetchMessages = async () => {
     try {
       setLoading(true)
-      const { data } = await axios.get('/api/admin/messages', { headers: getAuthHeader() })
+      const { data } = await api.get('/admin/messages')
       setMessages(data.messages || [])
     } catch (e) {
       console.error(e)
@@ -43,7 +43,7 @@ export default function Reports(){
 
   const markAsRead = async (id) => {
     try {
-      await axios.patch(`/api/admin/messages/${id}`, { status: 'read' }, { headers: getAuthHeader() })
+      await api.patch(`/admin/messages/${id}`, { status: 'read' })
       setToast('Report marked as read')
       fetchMessages()
     } catch (e) {
@@ -55,7 +55,7 @@ export default function Reports(){
     const ok = window.confirm('Delete this report message permanently?')
     if (!ok) return
     try {
-      await axios.delete(`/api/admin/messages/${id}`, { headers: getAuthHeader() })
+      await api.delete(`/admin/messages/${id}`)
       setToast('Report deleted successfully')
       fetchMessages()
     } catch (e) {

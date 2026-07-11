@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import axios from 'axios'
+import api from '../../services/api'
 import { useNavigate } from 'react-router-dom'
 
 export default function EmployerDashboard(){
@@ -28,12 +28,10 @@ const fetchJobs = async () => {
 
   try {
     const url = jobType === 'all' 
-      ? '/api/employer/jobs'
-      : `/api/employer/jobs?type=${jobType}`;
+      ? '/employer/jobs'
+      : `/employer/jobs?type=${jobType}`;
 
-    const { data } = await axios.get(url, { 
-      headers: getAuthHeader() 
-    });
+    const { data } = await api.get(url);
 
     setJobs(data.jobs || []);
   } catch (error) {
@@ -64,7 +62,7 @@ const fetchJobs = async () => {
       requiredSkills: form.requiredSkills.split(',').map(skill => skill.trim()).filter(Boolean)
     };
 
-    const response = await axios.post('/api/employer/jobs', payload, {
+    const response = await api.post('/employer/jobs', payload, {
       headers: {
         ...getAuthHeader(),
         'Content-Type': 'application/json'
@@ -98,7 +96,7 @@ const fetchJobs = async () => {
     setError('')
     try{
       const { _id, title, description, requiredSkills, salary, location } = edit
-      const { data } = await axios.patch(`/api/employer/jobs/${_id}`, { title, description, requiredSkills, salary, location }, { headers: { ...getAuthHeader(), 'Content-Type': 'application/json' } })
+      const { data } = await api.patch(`/employer/jobs/${_id}`, { title, description, requiredSkills, salary, location })
       // re-fetch to ensure consistency
       await fetchJobs()
       setEdit(null)
@@ -111,7 +109,7 @@ const fetchJobs = async () => {
     if(!ok) return
     setError('')
     try{
-      await axios.delete(`/api/employer/jobs/${id}`, { headers: getAuthHeader() })
+      await api.delete(`/employer/jobs/${id}`)
       await fetchJobs()
       setToast('Job deleted')
     }catch(e){ setError('Failed to delete job') }
@@ -119,7 +117,7 @@ const fetchJobs = async () => {
   const viewApplicants = async(job)=>{
     setError('')
     try{
-      const { data } = await axios.get(`/api/employer/jobs/${job._id}/applicants`, { headers: getAuthHeader() })
+      const { data } = await api.get(`/employer/jobs/${job._id}/applicants`)
       setApplicants(data.applicants||[])
       setApplicantsJob(job)
     }catch(e){ setError('Failed to load applicants') }
