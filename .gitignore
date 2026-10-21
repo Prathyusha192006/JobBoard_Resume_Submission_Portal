@@ -5,8 +5,9 @@ server/node_modules/
 
 # Environment files (keep your secrets safe!)
 .env
-.env.local
-.env.production
+.env.*
+server/.env*
+client/.env*
 
 # Build output
 client/dist/
